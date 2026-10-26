@@ -244,7 +244,7 @@ begin
   insert into projects (
     slug, name, block_label, tagline, short_description, status, is_published, is_featured,
     display_order, locality, city, address, pincode, maps_query, contact_phones,
-    whatsapp_number, highlights,
+    whatsapp_number, highlights, hero_image_url, location_map_url,
     theme_primary, theme_secondary, theme_accent, theme_background, theme_text
   ) values (
     'sai-sadan-block-a', 'Pratheek''s Sai Sadan', 'Block A',
@@ -257,11 +257,15 @@ begin
     array['98486 06111', '98491 78117'],
     '919848606111',
     array['2 BHK - 1200 Sft', '3 BHK - 1530 Sft', '4-Passenger Lift', '30'' Wide East Road'],
+    '/images/projects/sai-sadan/hero-building.png',
+    '/images/projects/sai-sadan/location-map.png',
     '#3E8A9C', '#6B3A26', '#C0603A', '#F0E4D8', '#2B3F8C'
   ) returning id into pid;
 
-  insert into unit_types (project_id, name, bhk, facing, area_sqft, rooms, display_order) values
+  insert into unit_types (project_id, name, bhk, facing, area_sqft, floor_plan_2d_url, floor_plan_3d_url, rooms, display_order) values
   (pid, '2 BHK East Facing', 2, 'East', 1200,
+   '/images/projects/sai-sadan/unit-2bhk-2d.png',
+   '/images/projects/sai-sadan/unit-2bhk-3d.png',
    '[{"name":"Hall","size":"10′-0″ x 15′-9″"},
      {"name":"Kitchen / Dining","size":"10′-0″ x 16′-4½″"},
      {"name":"Bedroom 1","size":"10′-0″ x 12′-3″"},
@@ -272,6 +276,8 @@ begin
      {"name":"Utility","size":"10′-0″ x 3′-4½″"},
      {"name":"Balcony","size":"4′-0″ wide"}]'::jsonb, 1),
   (pid, '3 BHK North Facing', 3, 'North', 1530,
+   '/images/projects/sai-sadan/unit-3bhk-2d.png',
+   '/images/projects/sai-sadan/unit-3bhk-3d.png',
    '[{"name":"Hall","size":"10′-0″ x 16′-0″"},
      {"name":"Dining","size":"12′-6″ x 12′-4½″"},
      {"name":"Kitchen","size":"11′-7½″ x 9′-3″"},
@@ -283,6 +289,12 @@ begin
      {"name":"Toilet 2","size":"7′-7½″ x 4′"},
      {"name":"Toilet 3","size":"7′ x 4′"},
      {"name":"Utility","size":"12′-4½″ x 4′-0″"}]'::jsonb, 2);
+
+  insert into project_images (project_id, image_url, caption, category, display_order) values
+  (pid, '/images/projects/sai-sadan/typical-floor-plan.jpg', 'Typical Floor Plan (2 & 3 BHK)', 'typical_floor_plan', 1),
+  (pid, '/images/projects/sai-sadan/building-elevation.png', 'Building Elevation', 'exterior', 2),
+  (pid, '/images/projects/sai-sadan/3d-floor-plans.png', '3D Floor Plans', 'gallery', 3),
+  (pid, '/images/projects/sai-sadan/location-map.png', 'Location Map', 'gallery', 4);
 
   insert into specifications (project_id, title, details, display_order) values
   (pid, 'Structure', array['R.C.C. framed structure','Steel TMT with ISI brand'], 1),

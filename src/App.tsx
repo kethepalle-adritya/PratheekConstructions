@@ -1,9 +1,22 @@
-import { Link, Route, Routes } from 'react-router-dom'
+import { Link, Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import { Footer } from './components/Footer'
 import { LeafWatermark } from './components/LeafWatermark'
 import { Navbar } from './components/Navbar'
 import { BrandOrnament } from './components/BrandOrnament'
 import { SiteSettingsProvider } from './components/SiteSettingsProvider'
+import { HomePage } from './pages/HomePage'
+import { ProjectsPage } from './pages/ProjectsPage'
+import { ProjectDetailPage } from './pages/ProjectDetailPage'
+import { AboutPage } from './pages/AboutPage'
+import { ContactPage } from './pages/ContactPage'
+import { FloatingWhatsApp } from './components/FloatingWhatsApp'
+import { AuthProvider } from './components/admin/AuthProvider'
+import { AdminGate } from './components/admin/AdminGate'
+import { AdminLayout } from './components/admin/AdminLayout'
+import { AdminDashboardPage } from './pages/admin/AdminDashboardPage'
+import { AdminProjectsPage } from './pages/admin/AdminProjectsPage'
+import { AdminLoginPage } from './pages/admin/AdminLoginPage'
+import { AdminProjectEditorPage } from './pages/admin/AdminProjectEditorPage'
 
 function PagePlaceholder({ title }: { title: string }) {
   return (
@@ -21,19 +34,35 @@ function PagePlaceholder({ title }: { title: string }) {
 function App() {
   return (
     <SiteSettingsProvider>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<PagePlaceholder title="Homes made for living" />} />
-        <Route path="/projects" element={<PagePlaceholder title="Our projects" />} />
-        <Route path="/projects/:slug" element={<PagePlaceholder title="A closer look at home" />} />
-        <Route path="/about" element={<PagePlaceholder title="Built around what matters" />} />
-        <Route path="/contact" element={<PagePlaceholder title="Let’s talk about home" />} />
-        <Route path="/admin/*" element={<PagePlaceholder title="Admin sign in" />} />
-        <Route path="*" element={<PagePlaceholder title="Page not found" />} />
-      </Routes>
-      <Footer />
+      <AuthProvider>
+        <Routes>
+          <Route element={<PublicLayout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/projects/:slug" element={<ProjectDetailPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="*" element={<PagePlaceholder title="Page not found" />} />
+          </Route>
+          <Route path="/admin/login" element={<AdminLoginPage />} />
+          <Route path="/admin" element={<AdminGate />}>
+            <Route element={<AdminLayout />}>
+              <Route index element={<AdminDashboardPage />} />
+              <Route path="projects" element={<AdminProjectsPage />} />
+              <Route path="projects/new" element={<AdminProjectEditorPage />} />
+              <Route path="projects/:id" element={<AdminProjectEditorPage />} />
+              <Route path="*" element={<Navigate to="/admin" replace />} />
+            </Route>
+          </Route>
+        </Routes>
+      </AuthProvider>
     </SiteSettingsProvider>
   )
 }
+
+function PublicLayout() {
+  return <><Navbar /><Outlet /><FloatingWhatsApp /><Footer /></>
+}
+
 
 export default App

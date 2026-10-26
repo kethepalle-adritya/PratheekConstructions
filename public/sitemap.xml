@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Replace https://YOUR_DOMAIN with the canonical production domain before deployment. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://YOUR_DOMAIN/</loc></url>
+  <url><loc>https://YOUR_DOMAIN/projects</loc></url>
+  <url><loc>https://YOUR_DOMAIN/projects/sai-sadan</loc></url>
+  <url><loc>https://YOUR_DOMAIN/about</loc></url>
+  <url><loc>https://YOUR_DOMAIN/contact</loc></url>
+</urlset>
